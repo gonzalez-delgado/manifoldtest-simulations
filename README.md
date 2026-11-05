@@ -88,9 +88,7 @@ The real data analyses presented in Section 6 can be reproduced with the code in
 [`examples/`](https://github.com/gonzalez-delgado/manifoldtest/tree/main/examples) folder of
 the `manifoldtest` repository.
 
----
-
-## 4. Requirements
+### Requirements
 
 - R (>= 4.0) with `manifoldtest` (>= 1.0.0), `energy`, `Ball`, `data.table`,
   `ggplot2` and `reshape2`, all installed with the package.
