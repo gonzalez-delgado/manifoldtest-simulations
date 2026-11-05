@@ -26,7 +26,6 @@
 # ================================================================
 suppressMessages({
   library(manifoldtest.simulations)
-  library(ggplot2); library(reshape2)
 })
 
 N_PERM <- 199
@@ -78,37 +77,9 @@ write.csv(data.frame(N = 300, DistCov = sz[1], Raw_dCov = sz[2], Geo_dCov = sz[3
           "torus_size.csv", row.names = FALSE)
 cat(sprintf("done in %.1f min\n", as.numeric(difftime(Sys.time(), t0, units = "mins"))))
 
-# ---- figure ------------------------------------------------------------
-
-res <- out
-df <- melt(res, id.vars = "N", variable.name = "Method", value.name = "Power")
-df$Method <- factor(df$Method, levels = c("DistCov", "Raw_dCov", "Geo_dCov"),
-                    labels = c("DistCov", "Raw dCov", "Geo dCov"))
-PAL <- c(DistCov = "#E41A1C", "Raw dCov" = "#984EA3", "Geo dCov" = "#00BFC4")
-LTY <- c(DistCov = "solid",   "Raw dCov" = "dotdash", "Geo dCov" = "twodash")
-SHP <- c(DistCov = 16,        "Raw dCov" = 3,         "Geo dCov" = 4)
-
-p <- ggplot(df, aes(x = N, y = Power, color = Method, linetype = Method,
-                    shape = Method)) +
-  geom_line(linewidth = 0.9) + geom_point(size = 2.6) +
-  scale_color_manual(values = PAL) + scale_linetype_manual(values = LTY) +
-  scale_shape_manual(values = SHP) +
-  scale_x_continuous(breaks = res$N) +
-  scale_y_continuous(limits = c(0, 105), breaks = seq(0, 100, 20)) +
-  geom_hline(yintercept = 5, linetype = "dotted", linewidth = 0.4, alpha = 0.6) +
-  annotate("text", x = min(res$N), y = 1.2, label = expression(alpha == 0.05),
-           hjust = 0, size = 3.0, color = "gray40") +
-  labs(title = "Rejection rates on the flat torus",
-       x = "Sample size N", y = "Power (%)") +
-  theme_minimal(base_size = 13) +
-  theme(legend.position = "bottom", legend.title = element_blank(),
-        legend.text = element_text(size = 13),
-        legend.key.width = unit(1.0, "cm"), legend.key.height = unit(0.65, "cm"),
-        legend.box = "horizontal", legend.margin = margin(t = 4, b = 0),
-        legend.box.margin = margin(t = -2),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 13),
-        panel.grid.minor = element_blank(),
-        plot.margin = margin(6, 8, 2, 6))
-ggsave("Fig_Torus_Motivation.png", p, width = 7.2, height = 5.4, dpi = 150)
-cat("saved Fig_Torus_Motivation.png\n")
-print(res, row.names = FALSE)
+# ---- figure (printed at 0.62\textwidth) ---------------------------------
+p <- power_plot(out, "N", "N", c("DistCov", "Raw_dCov", "Geo_dCov"),
+                "Power on the flat torus", NULL, "Sample size N",
+                xbreaks = out$N, legend_rows = 1)
+save_power_plot(p, "Fig_Torus_Motivation.png", w = 4.0, h = 3.1)
+print(out, row.names = FALSE)

@@ -28,8 +28,7 @@
 #   A   = 10 ... 70       (n = 150, eta = 0.10, Dep = 0.25)
 #
 # Output (in the working directory):
-#   Fig_Outlier_Power_vs_eps.png, Fig_Outlier_Power_vs_n.png,
-#   Fig_Outlier_Power_vs_Dep.png, Fig_Outlier_Power_vs_M.png,
+#   Fig_Outlier_Power.png (panels (a)-(d): power vs eta, n, Dep and A)
 #   outlier_power_vs_{eps,n,dep,M}.csv
 # ================================================================
 
@@ -237,33 +236,23 @@ for (sc in names(o)) {
 }
 
 # ================================================================
-# Figure 3 (four panels sharing a page -> legend on the first only)
+# Figure 3
 # ================================================================
 METHODS <- c("DistCov", "BallCov", "HHG", "Raw_dCov", "Geo_dCov", "RankCov")
 
-p3 <- power_plot(o$eps, "eps", "eps", METHODS,
-                 "Power vs Outlier Fraction under Outliers (H^3)",
-                 expression(paste("N = 150,  Dep = 0.25,  A = 50")),
-                 expression("Outlier fraction " * eta), TRUE, xbreaks = o$eps$eps)
-save_power_plot(p3, "Fig_Outlier_Power_vs_eps.png")
-
-p4 <- power_plot(o$n, "n", "n", METHODS,
-                 "Power vs Sample Size under Outliers (H^3)",
-                 expression(paste(eta, " = 0.10,  Dep = 0.25,  A = 50")),
-                 "Sample size N", FALSE, xbreaks = o$n$n)
-save_power_plot(p4, "Fig_Outlier_Power_vs_n.png")
-
-p5 <- power_plot(o$dep, "Dep", "Dep", METHODS,
-                 "Power vs Dependence under Outliers (H^3)",
-                 expression(paste("N = 150,  ", eta, " = 0.10,  A = 50")),
-                 expression("Dependence strength " * R^2), FALSE, xbreaks = o$dep$Dep)
-save_power_plot(p5, "Fig_Outlier_Power_vs_Dep.png")
-
-p6 <- power_plot(o$M, "M", "M", METHODS,
-                 "Power vs Outlier Magnitude under Outliers (H^3)",
-                 expression(paste("N = 150,  ", eta, " = 0.10,  Dep = 0.25")),
-                 "Outlier magnitude A", FALSE, xbreaks = o$M$M)
-save_power_plot(p6, "Fig_Outlier_Power_vs_M.png")
+# one figure, printed at \textwidth: four panels (a)-(d), whose fixed
+# settings are given in the caption of the paper, with a shared legend
+p <- power_panels(list(
+  list(data = o$eps, xvar = "eps", xlab = "'(a)  Outlier fraction'~eta",
+       breaks = c(0, 0.1, 0.2, 0.3)),
+  list(data = o$n, xvar = "n", xlab = "'(b)  Sample size'~N",
+       breaks = o$n$n),
+  list(data = o$dep, xvar = "Dep", xlab = "'(c)  Dependence strength'~R^2",
+       breaks = c(0.2, 0.3, 0.4, 0.5)),
+  list(data = o$M, xvar = "M", xlab = "'(d)  Outlier magnitude'~A",
+       breaks = o$M$M)), METHODS,
+  title = "Power on the hyperbolic space under outliers", nrow = 2)
+save_power_plot(p, "Fig_Outlier_Power.png", w = 6.5, h = 5.6)
 
 cat("\n===== Summary =====\n")
 for (sc in names(o)) {

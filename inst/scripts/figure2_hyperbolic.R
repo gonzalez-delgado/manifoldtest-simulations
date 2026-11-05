@@ -20,7 +20,7 @@
 #         Dep = 0.97 ... 0.04             (n = 150)
 #
 # Output (in the working directory):
-#   Fig_Hyperbolic_Power_vs_n.png, Fig_Hyperbolic_Power_vs_Dep.png
+#   Fig_Hyperbolic_Power.png (power vs n, left, and vs Dep, right)
 #   hyperbolic_power_vs_n.csv, hyperbolic_power_vs_dep.csv
 # ================================================================
 
@@ -221,21 +221,19 @@ write.csv(power_n, "hyperbolic_power_vs_n.csv", row.names = FALSE)
 write.csv(power_dep, "hyperbolic_power_vs_dep.csv", row.names = FALSE)
 
 # ================================================================
-# 7. Figure 2 (two panels sharing a page -> legend on the first only)
+# 7. Figure 2
 # ================================================================
 
 METHODS <- c("DistCov", "BallCov", "HHG", "Raw_dCov", "Geo_dCov")
-p1 <- power_plot(power_n, "n", "n", METHODS,
-                 "Power vs Sample Size on Hyperbolic Space",
-                 "H^3,  fixed Dep = 0.31",
-                 "Sample size N", TRUE, xbreaks = power_n$n)
-save_power_plot(p1, "Fig_Hyperbolic_Power_vs_n.png")
-
-p2 <- power_plot(power_dep, c("noise", "Dep"), "Dep", METHODS,
-                 "Power vs Dependence on Hyperbolic Space",
-                 "H^3,  fixed N = 150",
-                 expression("Dependence strength " * R^2), FALSE)
-save_power_plot(p2, "Fig_Hyperbolic_Power_vs_Dep.png")
+# one figure, printed at \textwidth: power vs N (left) and vs Dep (right),
+# with a shared legend
+p <- power_panels(list(
+  list(data = power_n, xvar = "n", xlab = "Sample~size~N",
+       breaks = c(30, 80, 120, 180, 250)),
+  list(data = power_dep, xvar = "Dep", xlab = "Dependence~strength~R^2",
+       breaks = c(0, 0.25, 0.5, 0.75, 1))), METHODS,
+  title = "Power on the hyperbolic space")
+save_power_plot(p, "Fig_Hyperbolic_Power.png", w = 6.5, h = 3.2)
 
 cat("\n===== Summary =====\n")
 cat("--- Power vs Sample Size (Dep =", round(dep_fixed, 3), ") ---\n")

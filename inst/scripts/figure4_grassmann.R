@@ -45,7 +45,7 @@
 # ================================================================
 suppressMessages({
   library(manifoldtest.simulations)
-  library(Ball); library(data.table); library(ggplot2); library(reshape2)
+  library(Ball); library(data.table)
 })
 
 N_DIM <- 4; K_DIM <- 2; DIM <- N_DIM * K_DIM
@@ -184,14 +184,7 @@ hhg <- as.data.table(run_hhg(INPUT, "grassmann", N_PERM))
 
 # ---- power and figure --------------------------------------------------
 
-LABELS <- c(DistCov = "DistCov", BallCov = "BallCov", HHG = "HHG",
-            Raw_dCov = "Raw dCov", Geo_dCov = "Geo dCov")
-METHODS <- names(LABELS)
-PAL <- c(DistCov = "#E41A1C", BallCov = "#377EB8", HHG = "#4DAF4A",
-         "Raw dCov" = "#984EA3", "Geo dCov" = "#00BFC4")
-LTT <- c(DistCov = "solid", BallCov = "dashed", HHG = "dotted",
-         "Raw dCov" = "dotdash", "Geo dCov" = "twodash")
-SHP <- c(DistCov = 16, BallCov = 17, HHG = 15, "Raw dCov" = 3, "Geo dCov" = 4)
+METHODS <- c("DistCov", "BallCov", "HHG", "Raw_dCov", "Geo_dCov")
 
 d <- merge(cur, hhg[, .(scan, xval, rep, HHG)], by = c("scan", "xval", "rep"))
 
@@ -206,31 +199,9 @@ fwrite(pow[scan == "null"], "grassmann_size.csv")
 
 # ---- figure ------------------------------------------------------------
 pn <- pow[scan == "n"][order(xval)]
-m <- melt(pn, id.vars = "xval", measure.vars = METHODS,
-          variable.name = "Method", value.name = "Power")
-m$Method <- factor(m$Method, levels = METHODS, labels = LABELS[METHODS])
-
-p <- ggplot(m, aes(x = xval, y = Power, color = Method, linetype = Method,
-                   shape = Method)) +
-  geom_line(linewidth = 0.9) + geom_point(size = 2.6) +
-  scale_color_manual(values = PAL) + scale_linetype_manual(values = LTT) +
-  scale_shape_manual(values = SHP) +
-  scale_x_continuous(breaks = pn$xval) +
-  scale_y_continuous(limits = c(0, 105), breaks = seq(0, 100, 20)) +
-  geom_hline(yintercept = 5, linetype = "dotted", linewidth = 0.4, alpha = 0.6) +
-  annotate("text", x = min(pn$xval), y = 2.5, label = expression(alpha == 0.05),
-           hjust = 0, size = 3.2, color = "gray40") +
-  labs(title = "Power on the Grassmann Manifold",
-       x = "Sample size N", y = "Power (%)") +
-  theme_minimal(base_size = 13) +
-  theme(legend.position = "bottom", legend.title = element_blank(),
-        legend.text = element_text(size = 13),
-        legend.key.width = unit(1.0, "cm"), legend.key.height = unit(0.65, "cm"),
-        legend.box = "horizontal", legend.margin = margin(t = 4, b = 0),
-        legend.box.margin = margin(t = -2),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 13),
-        panel.grid.minor = element_blank(),
-        plot.margin = margin(6, 8, 2, 6))
-ggsave("Fig_Grassmann_Power_vs_N.png", p, width = 8, height = 6.4, dpi = 150)
-cat("\nsaved Fig_Grassmann_Power_vs_N.png\n\n")
+# printed at 0.8\textwidth, with the legend on one line
+p <- power_plot(as.data.frame(pn), "xval", "xval", METHODS,
+                "Power on the Grassmann manifold", NULL, "Sample size N",
+                xbreaks = c(100, 200, 300, 500), legend_rows = 1)
+save_power_plot(p, "Fig_Grassmann_Power_vs_N.png", w = 5.6, h = 3.5)
 print(pn, row.names = FALSE)

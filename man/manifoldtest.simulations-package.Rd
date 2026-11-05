@@ -17,6 +17,7 @@
 \alias{python_grassmann_dist}
 \alias{power_plot}
 \alias{save_power_plot}
+\alias{power_panels}
 \docType{package}
 \title{Simulations for "Independence Test on Riemannian Manifolds"}
 \description{
@@ -48,8 +49,8 @@
       the Geo-dCov test on them.}
     \item{\code{run_hhg}, \code{python_grassmann_dist}}{the HHG benchmark,
       run in Python (\code{inst/python/hhg.py}).}
-    \item{\code{power_plot}, \code{save_power_plot}}{power curves of
-      Figures 2 and 3.}
+    \item{\code{power_plot}, \code{power_panels}, \code{save_power_plot}}{power curves of
+      the figures.}
   }
 }
 \keyword{internal}
