@@ -10,8 +10,6 @@ with the R package [`manifoldtest`](https://github.com/gonzalez-delgado/manifold
 (function `manifold.dcov.test()`). The benchmark procedures (Raw-dCov, Geo-dCov, BallCov,
 HHG) are implemented here.
 
----
-
 ## Running the simulations
 
 ### Install
