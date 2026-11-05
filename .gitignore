@@ -1,0 +1,29 @@
+# Outputs of the scripts (figures, result tables, logs)
+results/
+*.csv
+*.png
+*.log
+!inst/extdata/grassmann_basepoint.csv
+
+# R
+.Rhistory
+.RData
+.Rapp.history
+.Ruserdata
+.Rproj.user/
+*.Rproj
+*.Rcheck/
+manifoldtest.simulations_*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*~

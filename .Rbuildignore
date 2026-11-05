@@ -1,0 +1,8 @@
+^run_all\.sh$
+^results$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.vscode$
+^\.idea$
+__pycache__
+\.pyc$
