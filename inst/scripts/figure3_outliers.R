@@ -30,7 +30,6 @@
 # Output (in the working directory):
 #   Fig_Outlier_Power_vs_eps.png, Fig_Outlier_Power_vs_n.png,
 #   Fig_Outlier_Power_vs_Dep.png, Fig_Outlier_Power_vs_M.png,
-#   Fig_Legend.png (legend strip shared by Figures 2 and 3)
 #   outlier_power_vs_{eps,n,dep,M}.csv
 # ================================================================
 
@@ -265,13 +264,6 @@ p6 <- power_plot(o$M, "M", "M", METHODS,
                  expression(paste("N = 150,  ", eta, " = 0.10,  Dep = 0.25")),
                  "Outlier magnitude A", FALSE, xbreaks = o$M$M)
 save_power_plot(p6, "Fig_Outlier_Power_vs_M.png")
-
-# standalone legend strip (in case a figure is moved to another page); the
-# guide box is sized in "null" units, so it is given an explicit device
-leg <- gtable::gtable_filter(ggplot2::ggplotGrob(p3), "guide-box")
-png("Fig_Legend.png", width = 5.6, height = 1.5, units = "in", res = 300,
-    bg = "white")
-grid::grid.newpage(); grid::grid.draw(leg); invisible(dev.off())
 
 cat("\n===== Summary =====\n")
 for (sc in names(o)) {

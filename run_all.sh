@@ -21,8 +21,7 @@ for s in \
     text_basepoint_torus \
     text_matched_precision \
     text_sphere_antipodal \
-    text_rankcov_dimension \
-    design_checks
+    text_grassmann_population_dcov
 do
   echo "==== $s"
   Rscript "$SCRIPTS/$s.R" 2>&1 | tee "$s.log"

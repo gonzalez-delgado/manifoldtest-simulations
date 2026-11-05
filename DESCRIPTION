@@ -24,7 +24,6 @@ Imports:
     Ball,
     data.table,
     ggplot2,
-    gtable,
     parallel,
     reshape2,
     stats,

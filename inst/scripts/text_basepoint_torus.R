@@ -1,6 +1,7 @@
 # ================================================================
-# DistCov rejection rate on the Section 1.2 torus design, for the base
-# points p = (0,0,0), (0.25,0.25,0.25), (0.5,0.5,0.5) and (0.1,0.4,0.7).
+# DistCov rejection rate on the Section 1.2 torus design at the origin
+# p = (0,0,0) and at the centre of the fundamental domain p = (0.5,0.5,0.5),
+# where the sample meets the cut locus (Section 4.3: 54% -> 5%).
 #
 # The design, the seeds and the number of replications are those of
 # figure1_torus.R with N = 300; only the base point of the
@@ -28,7 +29,7 @@ gen <- function(n, seed) {
 }
 
 cat(sprintf("DistCov rejection rate at N = %d, %d replications\n", N, NREPS))
-for (p in list(c(0, 0, 0), c(0.25, 0.25, 0.25), c(0.5, 0.5, 0.5), c(0.1, 0.4, 0.7))) {
+for (p in list(c(0, 0, 0), c(0.5, 0.5, 0.5))) {
   s <- 0
   for (r in 1:NREPS) {
     g <- gen(N, 4000 + r)
